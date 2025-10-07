@@ -1,0 +1,13 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-The_Game.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:/Users/julsk/Documents/GitHub/The_Aristrocat/The_Game/Intermediate/Build/Win64/x64/The_GameEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.obj"
+"C:/Users/julsk/Documents/GitHub/The_Aristrocat/The_Game/Intermediate/Build/Win64/x64/UnrealEditor/Development/The_Game/The_Game.cpp.obj"
+"C:/Users/julsk/Documents/GitHub/The_Aristrocat/The_Game/Intermediate/Build/Win64/x64/UnrealEditor/Development/The_Game/PerModuleInline.gen.cpp.obj"
+"C:/Users/julsk/Documents/GitHub/The_Aristrocat/The_Game/Intermediate/Build/Win64/x64/UnrealEditor/Development/The_Game/Default.rc2.res"
+/OUT:"C:/Users/julsk/Documents/GitHub/The_Aristrocat/The_Game/Intermediate/Build/Win64/x64/UnrealEditor/Development/The_Game/UnrealEditor-The_Game.lib"
