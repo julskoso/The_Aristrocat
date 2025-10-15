@@ -1,0 +1,79 @@
+# =====================================================
+# ✅ Unreal Engine + Visual Studio .gitignore
+# =====================================================
+
+# --- Unreal Engine Caches & Build ---
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.sdf
+*.suo
+*.opensdf
+*.log
+*.tlog
+*.tmp
+*.vscode/
+.vscode/
+*.VC.db
+*.VC.opendb
+
+# --- Visual Studio temporäre Dateien ---
+.vs/
+*.VC.db
+*.VC.db-shm
+*.VC.db-wal
+*.ncb
+*.user
+*.ipch
+*.aps
+*.obj
+*.pch
+*.pdb
+*.idb
+*.cache
+*.ilk
+*.db
+*.opendb
+*.log
+
+# --- Unreal Build Tool ---
+Build/*.csproj
+Build/obj/
+Build/bin/
+*.xcodeproj
+*.xcworkspace
+*.sln
+*.suo
+
+# --- Backup und temporäre Dateien ---
+*.bak
+*.backup
+*.tmp
+*.temp
+~$*
+
+# --- Plugin & Engine Autogen ---
+Plugins/*/Intermediate/
+Plugins/*/Binaries/
+Plugins/*/DerivedDataCache/
+
+# --- Auto-generated project files ---
+*.pri
+*.filters
+*.VCXProj
+*.VCXProj.*
+*.VC.db
+
+# --- Engine-Build und Zwischenergebnisse ---
+Engine/Binaries/
+Engine/DerivedDataCache/
+Engine/Intermediate/
+Engine/Saved/
+
+# --- Unreal Metadata ---
+*.uasset.tmp
+*.umap.tmp
+*.upluginmanifest
+
+# --- Crash Repor
