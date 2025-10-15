@@ -1462,3 +1462,96 @@ FPackageName: Skipped package /Game/Objekte/Hexemap/StaticMeshes/Wiese has a val
 [2025.10.15-07.06.36:619][659]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 1043.657227
 [2025.10.15-07.06.36:771][668]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
 [2025.10.15-07.06.36:771][668]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 1043.790527, Update Interval: 333.632019
+[2025.10.15-07.12.20:797][ 72]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 1387.836182
+[2025.10.15-07.12.21:797][ 75]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.10.15-07.12.21:797][ 75]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 1388.504272, Update Interval: 303.768433
+[2025.10.15-07.13.14:847][234]LogUObjectHash: Compacting FUObjectHashTables data took   0.84ms
+[2025.10.15-07.13.16:312][234]LogSlate: Window 'Save Content' being destroyed
+[2025.10.15-07.13.16:327][234]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.10.15-07.13.16:401][234]LogSavePackage: Moving output files for package: /Game/__ExternalActors__/Levels/Main/A/SF/0VKIIJWS2B7NZO6M9T7OK5
+[2025.10.15-07.13.16:402][234]LogSavePackage: Moving 'C:/Users/julsk/Documents/GitHub/The_Aristrocat/The_Aristrocat/Saved/0VKIIJWS2B7NZO6M9T7OK581D007D5444D23C053CB5697608E1A49.tmp' to 'C:/Users/julsk/Documents/GitHub/The_Aristrocat/The_Aristrocat/Content/__ExternalActors__/Levels/Main/A/SF/0VKIIJWS2B7NZO6M9T7OK5.uasset'
+[2025.10.15-07.13.16:423][234]LogSavePackage: Moving output files for package: /Game/__ExternalActors__/Levels/Main/2/LA/KTC26F0K9H0SRTE7Z27ULB
+[2025.10.15-07.13.16:423][234]LogSavePackage: Moving 'C:/Users/julsk/Documents/GitHub/The_Aristrocat/The_Aristrocat/Saved/KTC26F0K9H0SRTE7Z27ULB5F3418EF4C494FB1651803932B4EC22C.tmp' to 'C:/Users/julsk/Documents/GitHub/The_Aristrocat/The_Aristrocat/Content/__ExternalActors__/Levels/Main/2/LA/KTC26F0K9H0SRTE7Z27ULB.uasset'
+[2025.10.15-07.13.16:444][234]LogFileHelpers: InternalPromptForCheckoutAndSave took 117.361 ms (total: 3.92 sec)
+[2025.10.15-07.13.16:556][234]LogStall: Shutdown...
+[2025.10.15-07.13.16:557][234]LogStall: Shutdown complete.
+[2025.10.15-07.13.16:639][234]LogWorld: UWorld::CleanupWorld for World_3, bSessionEnded=true, bCleanupResources=true
+[2025.10.15-07.13.16:639][234]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.10.15-07.13.16:813][234]LogWorld: UWorld::CleanupWorld for World_4, bSessionEnded=true, bCleanupResources=true
+[2025.10.15-07.13.16:813][234]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.10.15-07.13.16:908][234]LogWorld: UWorld::CleanupWorld for World_5, bSessionEnded=true, bCleanupResources=true
+[2025.10.15-07.13.16:908][234]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.10.15-07.13.16:984][234]LogWorld: UWorld::CleanupWorld for World_6, bSessionEnded=true, bCleanupResources=true
+[2025.10.15-07.13.16:984][234]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.10.15-07.13.17:040][234]LogSlate: Window 'MF_SampleSceneTextureNeighbourUVs' being destroyed
+[2025.10.15-07.13.17:072][234]LogWorld: UWorld::CleanupWorld for World_7, bSessionEnded=true, bCleanupResources=true
+[2025.10.15-07.13.17:072][234]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.10.15-07.13.17:136][234]LogSlate: Window 'The_Aristrocat - Unreal Editor' being destroyed
+[2025.10.15-07.13.17:138][234]LogWindowsTextInputMethodSystem: Activated input method: Deutsch (Schweiz) - (Keyboard).
+[2025.10.15-07.13.17:499][234]LogContentValidation: Display: Starting to validate 2 assets
+[2025.10.15-07.13.17:500][234]LogContentValidation: Enabled validators:
+[2025.10.15-07.13.17:500][234]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.10.15-07.13.17:500][234]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.10.15-07.13.17:500][234]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.10.15-07.13.17:500][234]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.10.15-07.13.17:500][234]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.10.15-07.13.17:500][234]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.10.15-07.13.17:506][234]AssetCheck: /Game/Levels/Main Validating asset
+[2025.10.15-07.13.17:602][234]LogUObjectHash: Compacting FUObjectHashTables data took   0.98ms
+[2025.10.15-07.13.17:642][234]Cmd: QUIT_EDITOR
+[2025.10.15-07.13.17:643][234]LogCore: Engine exit requested (reason: UUnrealEdEngine::CloseEditor())
+[2025.10.15-07.13.17:655][234]LogSourceControl: Display: Uncontrolled Changelist persistency file saved C:/Users/julsk/Documents/GitHub/The_Aristrocat/The_Aristrocat/Saved/SourceControl/UncontrolledChangelists.json
+[2025.10.15-07.13.17:682][235]LogCore: Engine exit requested (reason: EngineExit() was called; note: exit was already requested)
+[2025.10.15-07.13.17:690][235]LogStaticMesh: Abandoning remaining async distance field tasks for shutdown
+[2025.10.15-07.13.17:691][235]LogStaticMesh: Abandoning remaining async card representation tasks for shutdown
+[2025.10.15-07.13.17:713][235]LogWorld: UWorld::CleanupWorld for Main, bSessionEnded=true, bCleanupResources=true
+[2025.10.15-07.13.17:713][235]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.10.15-07.13.17:713][235]LogWorldPartition: UWorldPartition::Uninitialize : World = /Game/Levels/Main.Main
+[2025.10.15-07.13.17:782][235]LogStylusInput: Shutting down StylusInput subsystem.
+[2025.10.15-07.13.17:785][235]LogTedsSettings: UTedsSettingsEditorSubsystem::Deinitialize
+[2025.10.15-07.13.17:817][235]LogLevelSequenceEditor: LevelSequenceEditor subsystem deinitialized.
+[2025.10.15-07.13.17:866][235]LogWorld: UWorld::CleanupWorld for World_0, bSessionEnded=true, bCleanupResources=true
+[2025.10.15-07.13.17:866][235]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.10.15-07.13.17:868][235]LogWorld: UWorld::CleanupWorld for World_2, bSessionEnded=true, bCleanupResources=true
+[2025.10.15-07.13.17:868][235]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.10.15-07.13.17:868][235]LogWorld: UWorld::CleanupWorld for World_8, bSessionEnded=true, bCleanupResources=true
+[2025.10.15-07.13.17:869][235]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.10.15-07.13.17:897][235]LogRuntimeTelemetry: Recording EnginePreExit events
+[2025.10.15-07.13.17:898][235]LogStudioTelemetry: Ended StudioTelemetry Session
+[2025.10.15-07.13.17:905][235]LogAnalytics: Display: [UEEditor.Rocket.Release] AnalyticsET::EndSession
+[2025.10.15-07.13.17:940][235]LogAudio: Display: Beginning Audio Device Manager Shutdown (Module: AudioMixerXAudio2)...
+[2025.10.15-07.13.17:940][235]LogAudio: Display: Destroying 1 Remaining Audio Device(s)...
+[2025.10.15-07.13.17:940][235]LogAudio: Display: Audio Device unregistered from world 'Main'.
+[2025.10.15-07.13.17:945][235]LogAudio: Display: Shutting down audio device while 1 references to it are still alive. For more information, compile with INSTRUMENT_AUDIODEVICE_HANDLES.
+[2025.10.15-07.13.17:954][235]LogAudioMixer: Display: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=1, StreamState=4
+[2025.10.15-07.13.17:961][235]LogAudioMixer: Display: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=1, StreamState=2
+[2025.10.15-07.13.17:981][235]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID -1
+[2025.10.15-07.13.17:981][235]LogAudio: Display: Audio Device Manager Shutdown
+[2025.10.15-07.13.17:997][235]LogSlate: Slate User Destroyed.  User Index 0, Is Virtual User: 0
+[2025.10.15-07.13.18:001][235]LogExit: Preparing to exit.
+[2025.10.15-07.13.18:129][235]LogUObjectHash: Compacting FUObjectHashTables data took   0.73ms
+[2025.10.15-07.13.18:909][235]LogEditorDataStorage: Deinitializing
+[2025.10.15-07.13.19:354][235]LogDemo: Cleaned up 0 splitscreen connections, owner deletion: enabled
+[2025.10.15-07.13.19:582][235]LogExit: Editor shut down
+[2025.10.15-07.13.19:603][235]LogExit: Transaction tracking system shut down
+[2025.10.15-07.13.20:783][235]LogExit: Object subsystem successfully closed.
+[2025.10.15-07.13.20:812][235]LogShaderCompilers: Display: Shaders left to compile 0
+[2025.10.15-07.13.21:395][235]LogMemoryProfiler: Shutdown
+[2025.10.15-07.13.21:398][235]LogNetworkingProfiler: Shutdown
+[2025.10.15-07.13.21:399][235]LoadingProfiler: Shutdown
+[2025.10.15-07.13.21:399][235]LogTimingProfiler: Shutdown
+[2025.10.15-07.13.21:413][235]LogChaosVDEditor: [FChaosVDExtensionsManager::UnRegisterExtension] UnRegistering CVD Extension [FChaosVDGenericDebugDrawExtension] ...
+[2025.10.15-07.13.21:414][235]LogChaosVDEditor: [FChaosVDExtensionsManager::UnRegisterExtension] UnRegistering CVD Extension [FChaosVDAccelerationStructuresExtension] ...
+[2025.10.15-07.13.22:848][235]LogChaosDD: Chaos Debug Draw Shutdown
+[2025.10.15-07.13.22:915][235]LogHttp: Warning: [FHttpManager::Shutdown] Unbinding delegates for 1 outstanding Http Requests:
+[2025.10.15-07.13.22:915][235]LogHttp: Warning: 	verb=[POST] url=[https://datarouter.ol.epicgames.com/datarouter/api/v1/public/data?SessionID=%7BF1AFC205-49AA-2B30-0999-E3911A074999%7D&AppID=UEEditor.Rocket.Release&AppVersion=5.6.1-44394996%2B%2B%2BUE5%2BRelease-5.6&UserID=f2767bc14b88e3dfe7e25ca34bcaac18%7Ce5c9e63174ae4f8fad0c563198aefd42%7Cac7b9e8a-abd6-448c-98e8-e1976ccc7e68&AppEnvironment=datacollector-binary&UploadType=eteventstream] refs=[2] status=Processing
+[2025.10.15-07.13.23:572][235]LogEOSShared: FEOSSDKManager::Shutdown EOS_Shutdown Result=[EOS_Success]
+[2025.10.15-07.13.23:576][235]LogNFORDenoise: NFORDenoise function shutting down
+[2025.10.15-07.13.23:581][235]RenderDocPlugin: plugin has been unloaded.
+[2025.10.15-07.13.23:610][235]LogXGEController: Cleaning working directory: C:/Users/julsk/AppData/Local/Temp/UnrealXGEWorkingDir/
+[2025.10.15-07.13.23:653][235]LogIris: FNetObjectFactoryRegistry::UnregisterFactory is unregistering factory: None name: NetActorFactory id: 0
+[2025.10.15-07.13.23:653][235]LogIris: FNetObjectFactoryRegistry::UnregisterFactory is unregistering factory: None name: NetSubObjectFactory id: 1
+[2025.10.15-07.13.23:657][235]LogPakFile: Destroying PakPlatformFile
+[2025.10.15-07.13.24:941][235]LogD3D12RHI: ~FD3D12DynamicRHI
+[2025.10.15-07.13.25:006][235]LogExit: Exiting.
+[2025.10.15-07.13.25:076][235]Log file closed, 10/15/25 09:13:25
