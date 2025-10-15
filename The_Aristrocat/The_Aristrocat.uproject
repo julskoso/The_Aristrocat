@@ -1,27 +1,34 @@
 {
-	"FileVersion": 3,
-	"EngineAssociation": "5.6",
-	"Category": "",
-	"Description": "",
-	"Plugins": [
-		{
-			"Name": "ModelingToolsEditorMode",
-			"Enabled": true,
-			"TargetAllowList": [
-				"Editor"
-			]
-		},
-		{
-			"Name": "Water",
-			"Enabled": true
-		},
-		{
-			"Name": "WaterExtras",
-			"Enabled": true
-		},
-		{
-			"Name": "WaterAdvanced",
-			"Enabled": true
-		}
-	]
+    "FileVersion": 3,
+    "EngineAssociation": "5.6",
+    "Category": "",
+    "Description": "",
+    "Plugins": [
+        {
+            "Name": "ModelingToolsEditorMode",
+            "Enabled": true,
+            "TargetAllowList": [
+                "Editor"
+            ]
+        },
+        {
+            "Name": "Water",
+            "Enabled": true
+        },
+        {
+            "Name": "WaterExtras",
+            "Enabled": true
+        },
+        {
+            "Name": "WaterAdvanced",
+            "Enabled": true
+        }
+    ],
+    "Modules": [
+        {
+            "Name": "The_Aristrocat",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        }
+    ]
 }
