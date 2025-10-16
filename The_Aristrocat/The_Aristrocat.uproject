@@ -26,9 +26,13 @@
 			"Name": "WaterExtras",
 			"Enabled": true
 		},
-		{
-			"Name": "WaterAdvanced",
-			"Enabled": true
-		}
-	]
+                {
+                        "Name": "WaterAdvanced",
+                        "Enabled": true
+                },
+                {
+                        "Name": "EnhancedInput",
+                        "Enabled": true
+                }
+        ]
 }

@@ -1,12 +1,16 @@
 #include "FreeFlyCameraPawn.h"
 
 #include "Camera/CameraComponent.h"
-#include "Components/InputComponent.h"
 #include "Components/SceneComponent.h"
-#include "Engine/World.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "Engine/EngineTypes.h"
+#include "Engine/LocalPlayer.h"
+#include "Engine/World.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/PlayerController.h"
+#include "InputAction.h"
+#include "InputMappingContext.h"
 
 AFreeFlyCameraPawn::AFreeFlyCameraPawn()
 {
@@ -40,10 +44,16 @@ void AFreeFlyCameraPawn::BeginPlay()
     PitchAngle = CurrentRotation.Pitch;
 
     UpdatePlayerController();
+    InitializeMappingContext();
 
     if (CachedPlayerController)
     {
         CachedPlayerController->bShowMouseCursor = true;
+
+        FInputModeGameAndUI InputMode;
+        InputMode.SetHideCursorDuringCapture(false);
+        InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+        CachedPlayerController->SetInputMode(InputMode);
     }
 }
 
@@ -51,6 +61,7 @@ void AFreeFlyCameraPawn::PossessedBy(AController* NewController)
 {
     Super::PossessedBy(NewController);
     UpdatePlayerController();
+    InitializeMappingContext();
 }
 
 void AFreeFlyCameraPawn::Tick(float DeltaSeconds)
@@ -59,8 +70,8 @@ void AFreeFlyCameraPawn::Tick(float DeltaSeconds)
 
     const float CurrentSpeed = GetCurrentSpeed();
 
-    FVector Direction = (GetActorForwardVector() * ForwardInput) +
-        (GetActorRightVector() * RightInput) +
+    FVector Direction = (GetActorForwardVector() * MoveInput.Y) +
+        (GetActorRightVector() * MoveInput.X) +
         (FVector::UpVector * UpInput);
 
     if (!Direction.IsNearlyZero())
@@ -87,78 +98,90 @@ void AFreeFlyCameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-    if (!PlayerInputComponent)
+    if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
     {
-        return;
+        if (MoveAction)
+        {
+            EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AFreeFlyCameraPawn::HandleMove);
+            EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AFreeFlyCameraPawn::HandleMoveCompleted);
+        }
+
+        if (UpDownAction)
+        {
+            EnhancedInputComponent->BindAction(UpDownAction, ETriggerEvent::Triggered, this, &AFreeFlyCameraPawn::HandleVerticalMove);
+            EnhancedInputComponent->BindAction(UpDownAction, ETriggerEvent::Completed, this, &AFreeFlyCameraPawn::HandleVerticalMoveCompleted);
+        }
+
+        if (LookAction)
+        {
+            EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AFreeFlyCameraPawn::HandleLook);
+        }
+
+        if (RMBAction)
+        {
+            EnhancedInputComponent->BindAction(RMBAction, ETriggerEvent::Started, this, &AFreeFlyCameraPawn::StartLook);
+            EnhancedInputComponent->BindAction(RMBAction, ETriggerEvent::Completed, this, &AFreeFlyCameraPawn::StopLook);
+            EnhancedInputComponent->BindAction(RMBAction, ETriggerEvent::Canceled, this, &AFreeFlyCameraPawn::StopLook);
+        }
+
+        if (SprintAction)
+        {
+            EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AFreeFlyCameraPawn::StartSprint);
+            EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AFreeFlyCameraPawn::StopSprint);
+            EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Canceled, this, &AFreeFlyCameraPawn::StopSprint);
+        }
+
+        if (SlowAction)
+        {
+            EnhancedInputComponent->BindAction(SlowAction, ETriggerEvent::Started, this, &AFreeFlyCameraPawn::StartSlow);
+            EnhancedInputComponent->BindAction(SlowAction, ETriggerEvent::Completed, this, &AFreeFlyCameraPawn::StopSlow);
+            EnhancedInputComponent->BindAction(SlowAction, ETriggerEvent::Canceled, this, &AFreeFlyCameraPawn::StopSlow);
+        }
+
+        if (SpeedStepAction)
+        {
+            EnhancedInputComponent->BindAction(SpeedStepAction, ETriggerEvent::Triggered, this, &AFreeFlyCameraPawn::HandleSpeedStep);
+        }
     }
-
-    /*
-     * Axis Mappings (Project Settings -> Input):
-     *   MoveForward: W=1, S=-1
-     *   MoveRight: D=1, A=-1
-     *   MoveUp: E=1, Q=-1
-     *   Turn: Mouse X
-     *   LookUp: Mouse Y
-     *   AdjustSpeed: Mouse Wheel Axis
-     *
-     * Action Mappings:
-     *   Look: Right Mouse Button
-     *   BoostSpeed: Left Shift
-     *   SlowSpeed: Left Control
-     */
-
-    PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AFreeFlyCameraPawn::MoveForward);
-    PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AFreeFlyCameraPawn::MoveRight);
-    PlayerInputComponent->BindAxis(TEXT("MoveUp"), this, &AFreeFlyCameraPawn::MoveUp);
-    PlayerInputComponent->BindAxis(TEXT("Turn"), this, &AFreeFlyCameraPawn::Turn);
-    PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AFreeFlyCameraPawn::LookUp);
-    PlayerInputComponent->BindAxis(TEXT("AdjustSpeed"), this, &AFreeFlyCameraPawn::AdjustSpeed);
-
-    PlayerInputComponent->BindAction(TEXT("Look"), IE_Pressed, this, &AFreeFlyCameraPawn::StartLook);
-    PlayerInputComponent->BindAction(TEXT("Look"), IE_Released, this, &AFreeFlyCameraPawn::StopLook);
-    PlayerInputComponent->BindAction(TEXT("BoostSpeed"), IE_Pressed, this, &AFreeFlyCameraPawn::OnBoostPressed);
-    PlayerInputComponent->BindAction(TEXT("BoostSpeed"), IE_Released, this, &AFreeFlyCameraPawn::OnBoostReleased);
-    PlayerInputComponent->BindAction(TEXT("SlowSpeed"), IE_Pressed, this, &AFreeFlyCameraPawn::OnSlowPressed);
-    PlayerInputComponent->BindAction(TEXT("SlowSpeed"), IE_Released, this, &AFreeFlyCameraPawn::OnSlowReleased);
 }
 
-void AFreeFlyCameraPawn::MoveForward(float Value)
+void AFreeFlyCameraPawn::HandleMove(const FInputActionValue& Value)
 {
-    ForwardInput = Value;
+    MoveInput = Value.Get<FVector2D>();
 }
 
-void AFreeFlyCameraPawn::MoveRight(float Value)
+void AFreeFlyCameraPawn::HandleMoveCompleted(const FInputActionValue& Value)
 {
-    RightInput = Value;
+    (void)Value;
+    MoveInput = FVector2D::ZeroVector;
 }
 
-void AFreeFlyCameraPawn::MoveUp(float Value)
+void AFreeFlyCameraPawn::HandleVerticalMove(const FInputActionValue& Value)
 {
-    UpInput = Value;
+    UpInput = Value.Get<float>();
 }
 
-void AFreeFlyCameraPawn::Turn(float Value)
+void AFreeFlyCameraPawn::HandleVerticalMoveCompleted(const FInputActionValue& Value)
+{
+    (void)Value;
+    UpInput = 0.f;
+}
+
+void AFreeFlyCameraPawn::HandleLook(const FInputActionValue& Value)
 {
     if (!bIsLooking)
     {
         return;
     }
 
-    YawAngle += Value * MouseSensitivity;
+    const FVector2D LookAxis = Value.Get<FVector2D>();
+    YawAngle += LookAxis.X * MouseSensitivity;
+    PitchAngle = FMath::Clamp(PitchAngle + LookAxis.Y * MouseSensitivity, -85.f, 85.f);
 }
 
-void AFreeFlyCameraPawn::LookUp(float Value)
+void AFreeFlyCameraPawn::StartLook(const FInputActionValue& Value)
 {
-    if (!bIsLooking)
-    {
-        return;
-    }
-
-    PitchAngle = FMath::Clamp(PitchAngle + Value * MouseSensitivity, -85.f, 85.f);
-}
-
-void AFreeFlyCameraPawn::StartLook()
-{
+    (void)Value;
     bIsLooking = true;
     UpdatePlayerController();
 
@@ -168,11 +191,14 @@ void AFreeFlyCameraPawn::StartLook()
 
         FInputModeGameOnly InputMode;
         CachedPlayerController->SetInputMode(InputMode);
+        CachedPlayerController->SetIgnoreLookInput(false);
+        CachedPlayerController->SetIgnoreMoveInput(false);
     }
 }
 
-void AFreeFlyCameraPawn::StopLook()
+void AFreeFlyCameraPawn::StopLook(const FInputActionValue& Value)
 {
+    (void)Value;
     bIsLooking = false;
     UpdatePlayerController();
 
@@ -187,49 +213,51 @@ void AFreeFlyCameraPawn::StopLook()
     }
 }
 
-void AFreeFlyCameraPawn::OnBoostPressed()
+void AFreeFlyCameraPawn::StartSprint(const FInputActionValue& Value)
 {
-    bBoostPressed = true;
+    (void)Value;
+    bSprint = true;
 }
 
-void AFreeFlyCameraPawn::OnBoostReleased()
+void AFreeFlyCameraPawn::StopSprint(const FInputActionValue& Value)
 {
-    bBoostPressed = false;
+    (void)Value;
+    bSprint = false;
 }
 
-void AFreeFlyCameraPawn::OnSlowPressed()
+void AFreeFlyCameraPawn::StartSlow(const FInputActionValue& Value)
 {
-    bSlowPressed = true;
+    (void)Value;
+    bSlow = true;
 }
 
-void AFreeFlyCameraPawn::OnSlowReleased()
+void AFreeFlyCameraPawn::StopSlow(const FInputActionValue& Value)
 {
-    bSlowPressed = false;
+    (void)Value;
+    bSlow = false;
 }
 
-void AFreeFlyCameraPawn::AdjustSpeed(float Value)
+void AFreeFlyCameraPawn::HandleSpeedStep(const FInputActionValue& Value)
 {
-    if (FMath::IsNearlyZero(Value))
+    const float Step = Value.Get<float>() * 200.f;
+    if (!FMath::IsNearlyZero(Step))
     {
-        return;
+        BaseSpeed = FMath::Clamp(BaseSpeed + Step, MinBaseSpeed, MaxBaseSpeed);
     }
-
-    constexpr float SpeedStep = 100.f;
-    BaseSpeed = FMath::Clamp(BaseSpeed + Value * SpeedStep, 200.f, 6000.f);
 }
 
 float AFreeFlyCameraPawn::GetCurrentSpeed() const
 {
     float Speed = BaseSpeed;
 
-    if (bBoostPressed)
+    if (bSprint)
     {
-        Speed *= 3.f;
+        Speed *= SprintMultiplier;
     }
 
-    if (bSlowPressed)
+    if (bSlow)
     {
-        Speed *= 0.35f;
+        Speed *= SlowMultiplier;
     }
 
     return Speed;
@@ -248,4 +276,32 @@ void AFreeFlyCameraPawn::ApplyRotation()
 {
     const FRotator NewRotation(PitchAngle, YawAngle, 0.f);
     SetActorRotation(NewRotation);
+}
+
+void AFreeFlyCameraPawn::InitializeMappingContext()
+{
+    if (!FreeFlyMappingContext)
+    {
+        return;
+    }
+
+    UpdatePlayerController();
+
+    if (!CachedPlayerController)
+    {
+        return;
+    }
+
+    if (ULocalPlayer* LocalPlayer = CachedPlayerController->GetLocalPlayer())
+    {
+        if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer))
+        {
+            if (!CachedInputSubsystem.IsValid() || CachedInputSubsystem.Get() != Subsystem || !bMappingContextInitialized)
+            {
+                Subsystem->AddMappingContext(FreeFlyMappingContext, 0);
+                CachedInputSubsystem = Subsystem;
+                bMappingContextInitialized = true;
+            }
+        }
+    }
 }
