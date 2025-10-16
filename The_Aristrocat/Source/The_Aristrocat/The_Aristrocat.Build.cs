@@ -4,13 +4,22 @@ using UnrealBuildTool;
 
 public class The_Aristrocat : ModuleRules
 {
-	public The_Aristrocat(ReadOnlyTargetRules Target) : base(Target)
-	{
-		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
+        public The_Aristrocat(ReadOnlyTargetRules Target) : base(Target)
+        {
+                PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
                 PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+                PrivateDependencyModuleNames.AddRange(new string[] { });
+
+                if (Target.bBuildEditor)
+                {
+                        PrivateDependencyModuleNames.AddRange(new string[]
+                        {
+                                "AssetRegistry",
+                                "UnrealEd"
+                        });
+                }
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

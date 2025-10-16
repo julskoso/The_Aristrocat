@@ -22,6 +22,15 @@ public:
 
     virtual void Tick(float DeltaSeconds) override;
 
+    static void InitializeDefaultInputAssets(UInputMappingContext* MappingContext,
+        UInputAction* Move,
+        UInputAction* MoveVertical,
+        UInputAction* Look,
+        UInputAction* LookToggle,
+        UInputAction* Boost,
+        UInputAction* Slow,
+        UInputAction* AdjustSpeed);
+
 protected:
     virtual void BeginPlay() override;
     virtual void PossessedBy(AController* NewController) override;
@@ -56,6 +65,7 @@ private:
     float GetCurrentSpeed() const;
     void UpdatePlayerController();
     void ApplyRotation();
+    void EnsureInputAssetsLoaded();
 
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))

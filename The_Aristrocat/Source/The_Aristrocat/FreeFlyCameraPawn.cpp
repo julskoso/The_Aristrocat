@@ -11,6 +11,7 @@
 #include "GameFramework/PlayerController.h"
 #include "InputAction.h"
 #include "InputMappingContext.h"
+#include "UObject/UObjectGlobals.h"
 
 AFreeFlyCameraPawn::AFreeFlyCameraPawn()
 {
@@ -35,9 +36,64 @@ AFreeFlyCameraPawn::AFreeFlyCameraPawn()
     PitchAngle = GetActorRotation().Pitch;
 }
 
+void AFreeFlyCameraPawn::InitializeDefaultInputAssets(UInputMappingContext* MappingContext,
+    UInputAction* Move,
+    UInputAction* MoveVertical,
+    UInputAction* Look,
+    UInputAction* LookToggle,
+    UInputAction* Boost,
+    UInputAction* Slow,
+    UInputAction* AdjustSpeed)
+{
+    AFreeFlyCameraPawn* DefaultPawn = GetMutableDefault<AFreeFlyCameraPawn>();
+    if (!DefaultPawn)
+    {
+        return;
+    }
+
+    bool bAppliedChange = false;
+#if WITH_EDITOR
+    bool bModified = false;
+#endif
+
+    auto AssignIfDifferent = [&](auto& Target, auto* Source)
+    {
+        if (Source && Target != Source)
+        {
+#if WITH_EDITOR
+            if (!bModified)
+            {
+                DefaultPawn->Modify();
+                bModified = true;
+            }
+#endif
+            Target = Source;
+            bAppliedChange = true;
+        }
+    };
+
+    AssignIfDifferent(DefaultPawn->DefaultMappingContext, MappingContext);
+    AssignIfDifferent(DefaultPawn->MoveAction, Move);
+    AssignIfDifferent(DefaultPawn->MoveVerticalAction, MoveVertical);
+    AssignIfDifferent(DefaultPawn->LookAction, Look);
+    AssignIfDifferent(DefaultPawn->LookToggleAction, LookToggle);
+    AssignIfDifferent(DefaultPawn->BoostAction, Boost);
+    AssignIfDifferent(DefaultPawn->SlowAction, Slow);
+    AssignIfDifferent(DefaultPawn->AdjustSpeedAction, AdjustSpeed);
+
+#if WITH_EDITOR
+    if (bAppliedChange)
+    {
+        DefaultPawn->MarkPackageDirty();
+    }
+#endif
+}
+
 void AFreeFlyCameraPawn::BeginPlay()
 {
     Super::BeginPlay();
+
+    EnsureInputAssetsLoaded();
 
     const FRotator CurrentRotation = GetActorRotation();
     YawAngle = CurrentRotation.Yaw;
@@ -99,18 +155,10 @@ void AFreeFlyCameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputC
         return;
     }
 
+    EnsureInputAssetsLoaded();
+
     if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent))
     {
-        /*
-         * Configure Enhanced Input assets in the editor:
-         *   - Create an Input Mapping Context for the free-fly camera controls.
-         *   - Add Input Actions for Move (Vector2), MoveVertical (Axis1D), Look (Vector2),
-         *     LookToggle (Boolean), Boost (Boolean), Slow (Boolean), and AdjustSpeed (Axis1D).
-         *   - Map the actions as follows: WASD -> Move, QE -> MoveVertical, Mouse X/Y -> Look,
-         *     Right Mouse -> LookToggle, Left Shift -> Boost, Left Ctrl -> Slow, Mouse Wheel -> AdjustSpeed.
-         *   - Assign those assets to the pawn defaults so they are available at runtime.
-         */
-
         if (MoveAction)
         {
             EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AFreeFlyCameraPawn::HandleMove);
@@ -152,6 +200,36 @@ void AFreeFlyCameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputC
             EnhancedInput->BindAction(AdjustSpeedAction, ETriggerEvent::Triggered, this, &AFreeFlyCameraPawn::HandleAdjustSpeed);
         }
     }
+}
+
+void AFreeFlyCameraPawn::EnsureInputAssetsLoaded()
+{
+    if (!DefaultMappingContext)
+    {
+        if (UInputMappingContext* LoadedMapping = LoadObject<UInputMappingContext>(nullptr, TEXT("/Game/Input/IMC_FreeFly.IMC_FreeFly")))
+        {
+            DefaultMappingContext = LoadedMapping;
+        }
+    }
+
+    auto LoadActionIfNeeded = [](TObjectPtr<UInputAction>& ActionPtr, const TCHAR* Path)
+    {
+        if (!ActionPtr)
+        {
+            if (UInputAction* LoadedAction = LoadObject<UInputAction>(nullptr, Path))
+            {
+                ActionPtr = LoadedAction;
+            }
+        }
+    };
+
+    LoadActionIfNeeded(MoveAction, TEXT("/Game/Input/IA_Move.IA_Move"));
+    LoadActionIfNeeded(MoveVerticalAction, TEXT("/Game/Input/IA_UpDown.IA_UpDown"));
+    LoadActionIfNeeded(LookAction, TEXT("/Game/Input/IA_Look.IA_Look"));
+    LoadActionIfNeeded(LookToggleAction, TEXT("/Game/Input/IA_RMB.IA_RMB"));
+    LoadActionIfNeeded(BoostAction, TEXT("/Game/Input/IA_Sprint.IA_Sprint"));
+    LoadActionIfNeeded(SlowAction, TEXT("/Game/Input/IA_Slow.IA_Slow"));
+    LoadActionIfNeeded(AdjustSpeedAction, TEXT("/Game/Input/IA_SpeedStep.IA_SpeedStep"));
 }
 
 void AFreeFlyCameraPawn::MoveForward(float Value)
@@ -284,6 +362,8 @@ void AFreeFlyCameraPawn::ApplyRotation()
 
 void AFreeFlyCameraPawn::ApplyMappingContext()
 {
+    EnsureInputAssetsLoaded();
+
     if (bMappingContextApplied || !DefaultMappingContext)
     {
         return;
